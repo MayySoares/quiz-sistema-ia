@@ -75,6 +75,19 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .btn-back{background:transparent;border:1px solid var(--border2);color:#404060;padding:13px 22px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;transition:color .2s,border-color .2s;}
 .btn-back:hover{color:#888;border-color:#333;}
 
+/* CAPTURE */
+.capture{text-align:center;max-width:440px;margin:0 auto;}
+.capture-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(126,211,33,.1);border:1px solid rgba(126,211,33,.25);padding:5px 14px;border-radius:100px;font-size:10px;font-weight:700;color:#7ED321;letter-spacing:2px;margin-bottom:20px;}
+.capture-title{font-family:'Unbounded',sans-serif;font-size:clamp(26px,4vw,38px);font-weight:900;color:var(--white);letter-spacing:-1px;margin-bottom:12px;}
+.capture-sub{font-size:15px;color:#606080;line-height:1.6;margin-bottom:28px;}
+.capture-sub strong{color:var(--gold);font-weight:600;}
+.capture-form{display:flex;flex-direction:column;gap:12px;}
+.capture-input{width:100%;background:var(--dark2);border:1px solid var(--border2);border-radius:12px;padding:16px 18px;color:var(--white);font-family:'Outfit',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
+.capture-input:focus{border-color:var(--gold);}
+.capture-input::placeholder{color:#404060;}
+.capture-error{color:var(--red);font-size:12px;min-height:16px;text-align:left;padding-left:4px;}
+.capture-privacy{font-size:12px;color:#303050;margin-top:16px;}
+
 /* LOADING */
 .loading{text-align:center;}
 .loading-spinner{width:60px;height:60px;margin:0 auto 28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;}
@@ -240,6 +253,23 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     </div>
   </div>
 
+  <!-- CAPTURA DE EMAIL -->
+  <div class="screen" id="screen-capture">
+    <div class="capture">
+      <div class="capture-badge">✓ SEU DIAGNÓSTICO ESTÁ PRONTO</div>
+      <h2 class="capture-title">Quase lá! 🎉</h2>
+      <p class="capture-sub">Preencha seus dados para ver seu <strong>perfil completo</strong> e liberar seu acesso ao trial de 3 dias grátis.</p>
+      <div class="capture-form">
+        <input type="text" id="capName" class="capture-input" placeholder="Seu nome" autocomplete="given-name"/>
+        <input type="text" id="capLastName" class="capture-input" placeholder="Seu sobrenome" autocomplete="family-name"/>
+        <input type="email" id="capEmail" class="capture-input" placeholder="Seu melhor e-mail" autocomplete="email"/>
+        <div class="capture-error" id="capError"></div>
+        <button class="btn btn-block" onclick="submitCapture()">Ver meu resultado →</button>
+      </div>
+      <div class="capture-privacy">🔒 Seus dados estão seguros. Sem spam, prometemos.</div>
+    </div>
+  </div>
+
   <!-- RESULT -->
   <div class="screen" id="screen-result">
     <div class="result">
@@ -279,7 +309,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 <script>
 const answers = {};
 const order = ['intro','q1','q2','q3','q4','q5'];
-const labels = {intro:'Início',q1:'1/5',q2:'2/5',q3:'3/5',q4:'4/5',q5:'5/5'};
+const labels = {intro:'Início',q1:'1/5',q2:'2/5',q3:'3/5',q4:'4/5',q5:'5/5',capture:'Quase lá',loading:'Analisando'};
 
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -315,11 +345,71 @@ function runLoading(){
   const iv = setInterval(()=>{
     i++;
     if(i < steps.length){ el.textContent = steps[i]; }
-    else { clearInterval(iv); showResult(); }
+    else { clearInterval(iv); goTo('capture'); }
   }, 700);
 }
 
-function showResult(){
+// Captura de email
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbySe2ipvOqSVAskcxkvm3buys909aSNYFgjptxnkFU-iB5hRXwV9XGPqQsij5dww2ci/exec';
+const leadData = {};
+
+function getPerfilName(){
+  const a1=answers.q1||'foco', a2=answers.q2||'clt', a4=answers.q4||'clareza';
+  if(a1==='carreira' || a4==='dinheiro') return 'O Estrategista de Carreira';
+  if(a1==='conteudo' || a2==='empreendedor') return 'O Criador em Evolução';
+  if(a1==='foco' || a4==='clareza' || a4==='presenca') return 'A Mente Cheia de SP';
+  if(a2==='estudante') return 'O Guerreiro Trabalho+Estudo';
+  return 'O Executor da Correria';
+}
+
+function submitCapture(){
+  const name = document.getElementById('capName').value.trim();
+  const lastName = document.getElementById('capLastName').value.trim();
+  const email = document.getElementById('capEmail').value.trim();
+  const errEl = document.getElementById('capError');
+  const btn = document.querySelector('#screen-capture .btn');
+
+  // Validação simples
+  if(!name){ errEl.textContent = 'Por favor, preencha seu nome.'; return; }
+  if(!lastName){ errEl.textContent = 'Por favor, preencha seu sobrenome.'; return; }
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if(!emailOk){ errEl.textContent = 'Por favor, coloque um e-mail válido.'; return; }
+
+  errEl.textContent = '';
+
+  // Monta os dados do lead
+  leadData.nome = name;
+  leadData.sobrenome = lastName;
+  leadData.email = email;
+  leadData.perfil = getPerfilName();
+  leadData.respostas = {...answers};
+
+  // Feedback visual no botão
+  btn.disabled = true;
+  btn.textContent = 'Enviando... ⏳';
+
+  // Envia pro Google Sheets
+  fetch(GOOGLE_SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(leadData)
+  })
+  .then(() => {
+    // no-cors não retorna resposta legível, mas o envio funciona
+    btn.disabled = false;
+    btn.textContent = 'Ver meu resultado →';
+    showResult(name);
+  })
+  .catch(() => {
+    // Mesmo se der erro de leitura, o dado normalmente foi salvo (no-cors)
+    btn.disabled = false;
+    btn.textContent = 'Ver meu resultado →';
+    showResult(name);
+  });
+}
+
+function showResult(userName){
   const a1=answers.q1||'foco', a2=answers.q2||'clt', a4=answers.q4||'clareza';
   let emoji,title,desc,tags;
 
@@ -346,7 +436,7 @@ function showResult(){
   }
 
   document.getElementById('resEmoji').textContent = emoji;
-  document.getElementById('resTitle').textContent = title;
+  document.getElementById('resTitle').textContent = userName ? `${userName}, ${title.charAt(0).toLowerCase() + title.slice(1)}` : title;
   document.getElementById('resDesc').textContent = desc;
   document.getElementById('resTags').innerHTML = tags.map(t=>`<span class="result-tag">${t}</span>`).join('');
   goTo('result');
@@ -358,6 +448,8 @@ function showResult(){
 function restart(){
   Object.keys(answers).forEach(k=>delete answers[k]);
   document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+  ['capName','capLastName','capEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const err=document.getElementById('capError');if(err)err.textContent='';
   goTo('intro');
 }
 
