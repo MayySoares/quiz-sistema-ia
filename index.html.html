@@ -157,9 +157,9 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <!-- INTRO -->
   <div class="screen active" id="screen-intro">
     <div class="intro">
-      <div class="intro-badge">⚡ Diagnóstico gratuito · 60 segundos</div>
+      <div class="intro-badge">🚀 Pré-lançamento · Vagas VIP limitadas</div>
       <h1 class="intro-h1">Descubra seu perfil<span class="acc">de produtividade</span></h1>
-      <p class="intro-sub">Responda 5 perguntas rápidas e descubra exatamente qual sistema de IA foi feito pra destravar a sua correria de SP.</p>
+      <p class="intro-sub">Responda 5 perguntas rápidas, descubra qual sistema de IA combina com você e garanta sua vaga VIP no pré-lançamento.</p>
       <div class="intro-meta">
         <div class="intro-meta-i"><span>⏱️</span> Leva 60 segundos</div>
         <div class="intro-meta-i"><span>🎯</span> Resultado personalizado</div>
@@ -170,7 +170,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         <div class="proof-avatars">
           <div class="proof-av">LM</div><div class="proof-av">AC</div><div class="proof-av">RP</div><div class="proof-av">+</div>
         </div>
-        <div class="proof-text"><strong>+2.400 paulistanos</strong> já descobriram o perfil</div>
+        <div class="proof-text"><strong>Seja dos primeiros</strong> a testar quando lançar</div>
       </div>
     </div>
   </div>
@@ -256,15 +256,15 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <!-- CAPTURA DE EMAIL -->
   <div class="screen" id="screen-capture">
     <div class="capture">
-      <div class="capture-badge">✓ SEU DIAGNÓSTICO ESTÁ PRONTO</div>
-      <h2 class="capture-title">Quase lá! 🎉</h2>
-      <p class="capture-sub">Preencha seus dados para ver seu <strong>perfil completo</strong> e liberar seu acesso ao trial de 3 dias grátis.</p>
+      <div class="capture-badge">🚀 PRÉ-LANÇAMENTO · VAGAS LIMITADAS</div>
+      <h2 class="capture-title">Garanta sua vaga VIP 🎉</h2>
+      <p class="capture-sub">O Sistema IA Produtiva™ está em pré-lançamento. Entre na <strong>lista VIP</strong> para ser dos primeiros a testar 3 dias grátis e travar o preço de lançamento.</p>
       <div class="capture-form">
         <input type="text" id="capName" class="capture-input" placeholder="Seu nome" autocomplete="given-name"/>
         <input type="text" id="capLastName" class="capture-input" placeholder="Seu sobrenome" autocomplete="family-name"/>
         <input type="email" id="capEmail" class="capture-input" placeholder="Seu melhor e-mail" autocomplete="email"/>
         <div class="capture-error" id="capError"></div>
-        <button class="btn btn-block" onclick="submitCapture()">Ver meu resultado →</button>
+        <button class="btn btn-block" onclick="submitCapture()">Quero minha vaga VIP →</button>
       </div>
       <div class="capture-privacy">🔒 Seus dados estão seguros. Sem spam, prometemos.</div>
     </div>
@@ -282,22 +282,30 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       </div>
 
       <div class="offer">
-        <div class="offer-tag">🔥 OFERTA DE LANÇAMENTO</div>
-        <div class="offer-h">Seu sistema personalizado está pronto</div>
-        <div class="offer-sub">Comece com 3 dias grátis. Sem cartão, sem compromisso.</div>
+        <div class="offer-tag">✅ VOCÊ ESTÁ NA LISTA VIP</div>
+        <div class="offer-h">Parabéns! Sua vaga está garantida 🎉</div>
+        <div class="offer-sub">Você é uma das primeiras pessoas a entrar no pré-lançamento do Sistema IA Produtiva™. Vamos te avisar em primeira mão assim que abrir!</div>
         <div class="offer-price-old">De R$39/mês</div>
         <div class="offer-price">R$27<span style="font-size:24px">,90</span><sub>/mês</sub></div>
-        <div class="offer-after">Só no lançamento · Depois volta a R$39/mês</div>
-        <div style="text-align:center;"><div class="offer-timer"><span class="offer-timer-l">⏱️ Oferta expira em</span><span class="offer-timer-v" id="offerTimer">15:00</span></div></div>
+        <div class="offer-after">🔒 Preço de lançamento travado só para a lista VIP</div>
         <div class="offer-feats">
+          <div class="offer-feat">3 dias grátis para testar tudo</div>
           <div class="offer-feat">Todos os 50 prompts profissionais</div>
           <div class="offer-feat">IA integrada + chat para refinar</div>
           <div class="offer-feat">Dashboard de progresso e streak</div>
-          <div class="offer-feat">3 rotinas produtivas completas</div>
-          <div class="offer-feat">Cancela em 1 clique, sem burocracia</div>
+          <div class="offer-feat">Preço de lançamento garantido (R$27,90)</div>
         </div>
-        <button class="btn btn-block" onclick="alert('Aqui vai conectar com o checkout/pagamento quando publicar! 🚀')">⚡ Começar meus 3 dias grátis</button>
-        <div class="offer-guar">🔒 Pagamento seguro · Sem cartão no trial</div>
+        <div style="background:linear-gradient(135deg,rgba(245,166,35,.06),rgba(232,49,91,.06));border:1px solid rgba(245,166,35,.15);border-radius:12px;padding:16px;margin-bottom:8px;">
+          <div style="font-size:13px;color:#9090b0;line-height:1.6;">📩 Fique de olho no seu e-mail! Assim que liberarmos as primeiras vagas, <strong style="color:var(--gold);">você será avisado antes de todo mundo.</strong></div>
+        </div>
+        <div class="offer-guar">💛 Obrigado por fazer parte do começo dessa jornada!</div>
+      </div>
+
+      <!-- Compartilhar -->
+      <div style="background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-top:16px;text-align:center;">
+        <div style="font-family:'Unbounded',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px;">Conhece alguém na correria de SP?</div>
+        <div style="font-size:13px;color:#505070;margin-bottom:16px;line-height:1.6;">Compartilha o diagnóstico com quem também vive no sufoco do dia a dia. 😄</div>
+        <button class="btn btn-block" onclick="shareQuiz()" style="background:#25D366;box-shadow:0 8px 30px rgba(37,211,102,.2);">📲 Compartilhar no WhatsApp</button>
       </div>
 
       <button class="result-restart" onclick="restart()">↺ Refazer o diagnóstico</button>
@@ -442,7 +450,6 @@ function showResult(userName){
   goTo('result');
   document.getElementById('prog').style.width = '100%';
   document.getElementById('progLabel').textContent = '✓ Pronto';
-  startOfferTimer();
 }
 
 function restart(){
@@ -453,18 +460,11 @@ function restart(){
   goTo('intro');
 }
 
-let timerStarted = false;
-function startOfferTimer(){
-  if(timerStarted) return; timerStarted = true;
-  let total = 15*60;
-  const el = document.getElementById('offerTimer');
-  const iv = setInterval(()=>{
-    total--;
-    if(total < 0){ clearInterval(iv); el.textContent='00:00'; return; }
-    const m = String(Math.floor(total/60)).padStart(2,'0');
-    const s = String(total%60).padStart(2,'0');
-    el.textContent = m+':'+s;
-  }, 1000);
+function shareQuiz(){
+  const texto = 'Descobri meu perfil de produtividade nesse quiz e curti demais! 😄 Faz o seu também: ';
+  const url = window.location.href;
+  const whatsapp = 'https://wa.me/?text=' + encodeURIComponent(texto + url);
+  window.open(whatsapp, '_blank');
 }
 </script>
 </body>
